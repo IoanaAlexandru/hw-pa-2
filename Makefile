@@ -1,28 +1,28 @@
-build: brothers bears planning counting
+build: minlexbfs disjcnt rtd revedges
 
-brothers:
-	g++ -Wall frati.cpp brothers.cpp -o brothers
+minlexbfs:
+	g++ -Wall minlexbfs.cpp -o minlexbfs
 
-bears:
-	g++ -Wall ursi.cpp bears.cpp -o bears
+disjcnt:
+	g++ -Wall disjcnt.cpp -o disjcnt
 
-planning:
-	g++ -Wall planificare.cpp planning.cpp -o planning
+rtd:
+	g++ -Wall rtd.cpp -o rtd
 
-counting:
-	g++ -Wall numaratoare.cpp counting.cpp -o counting
+revedges:
+	g++ -Wall revedges.cpp -o revedges
 
 run-p1:
-	./brothers
+	./minlexbfs
 
 run-p2:
-	./bears
+	./disjcnt
 
 run-p3:
-	./planning
+	./rtd
 
 run-p4:
-	./counting
+	./revedges
 
 clean:
-	rm -f brothers bears planning counting
+	rm -f minlexbfs disjcnt rtd revedges

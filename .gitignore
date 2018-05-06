@@ -2,3 +2,9 @@ CMakeLists.txt
 cmake-build-debug
 .idea
 *.pdf
+.idea
+*.pdf
+minlexbfs
+disjcnt
+rtd
+revedges
