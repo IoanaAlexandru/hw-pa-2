@@ -12,22 +12,22 @@ bool tema2::RTD::Read(std::string filename) {
     return false;
 
   // Reset problem data
-  rtd = 0;
+  rtd_ = 0;
 
-  f >> N >> M >> Sx >> Sy >> Fx >> Fy >> K;
+  f >> N_ >> M_ >> Sx_ >> Sy_ >> Fx_ >> Fy_ >> K_;
 
-  cost[0] = -1;  // virtual element
+  cost_[0] = -1;  // virtual element
   for (auto i = 1; i <= 6; i++)
-    f >> cost[i];
+    f >> cost_[i];
 
-  for (auto i = 0; i < N; i++)
-    for (auto j = 0; j < M; j++)
-      grid[i][j] = true;
+  for (unsigned int i = 0; i < N_; i++)
+    for (unsigned int j = 0; j < M_; j++)
+      grid_[i][j] = true;
 
-  for (auto i = 0; i < K; i++) {
+  for (unsigned int i = 0; i < K_; i++) {
     int X, Y;
     f >> X >> Y;
-    grid[X][Y] = false;
+    grid_[X][Y] = false;
   }
 
   f.close();
@@ -43,7 +43,7 @@ bool tema2::RTD::Write(std::string filename) {
   if (!f.is_open())
     return false;
 
-  f << rtd;
+  f << rtd_;
 
   f.close();
   return true;

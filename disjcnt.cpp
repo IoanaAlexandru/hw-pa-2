@@ -12,9 +12,9 @@ bool tema2::Disjcnt::Read(std::string filename) {
     return false;
 
   // Reset problem data
-  disjcnt.clear();
+  disjcnt_.clear();
 
-  f >> N >> M;
+  f >> N_ >> M_;
 
   // Read graph data TODO
 
@@ -31,7 +31,7 @@ bool tema2::Disjcnt::Write(std::string filename) {
   if (!f.is_open())
     return false;
 
-  f << disjcnt.size();
+  f << disjcnt_.size();
 
   f.close();
   return true;

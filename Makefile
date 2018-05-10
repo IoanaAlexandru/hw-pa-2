@@ -1,6 +1,6 @@
 build: minlexbfs disjcnt rtd revedges
 
-minlexbfs:
+minlexbfs_:
 	g++ -Wall minlexbfs.cpp -o minlexbfs
 
 disjcnt:
