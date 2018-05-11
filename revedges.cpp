@@ -38,37 +38,47 @@ bool tema2::Revedges::Read(std::string filename) {
 }
 
 void tema2::Revedges::Solve() {
+  std::vector<std::vector<int> > cache(kNMax);
+
   for (auto q : query_) {  // Using Dijkstra
     int source = q.first, destination = q.second;
-    g_.InitSource(source);
-    std::priority_queue<std::pair<Node *, int>,
-                        std::vector<std::pair<Node *, int> >, minWeight> queue;
-    for (unsigned int i = 1; i <= N_; i++) {
-      Node *u = &g_.GetNode(i);
-      for (auto e : g_.GetNode(source).edges) {
-        Node *v = e.first;
-        int weight = e.second;
-        if (u == v) {
-          u->d = weight;
-          queue.push(e);
-        }
-      }
+
+    if (!cache[source].empty()) {
+      revedges_.push_back(cache[source][destination]);
+      continue;
+    }
+
+    std::vector<int> d(kNMax);
+    std::queue<std::pair<Node *, int> > queue;
+
+    for (auto i = 1; i <= N_; i++) {
+      d[i] = INT32_MAX;
+      g_.GetNode(i).col = white;
+    }
+    d[source] = 0;
+    g_.GetNode(source).col = grey;
+    for (auto u : g_.GetNode(source).edges) {
+      if (u.second < d[u.first->n])
+        d[u.first->n] = u.second;
+      queue.push(u);
     }
 
     while (!queue.empty()) {
-      auto u = queue.top();
+      auto u = queue.front();
       queue.pop();
       u.first->col = grey;
 
       for (auto v : u.first->edges) {
-        if (v.first->col == white && v.first->d > u.first->d + v.second) {
-          v.first->d = u.first->d + v.second;
+        if (v.first->col == white && d[v.first->n] > d[u.first->n] + v.second) {
+          d[v.first->n] = d[u.first->n] + v.second;
           queue.push(v);
         }
       }
     }
 
-    revedges_.push_back(g_.GetNode(destination).d);
+    cache[source] = d;
+
+    revedges_.push_back(cache[source][destination]);
   }
 }
 
@@ -78,7 +88,7 @@ bool tema2::Revedges::Write(std::string filename) {
     return false;
 
   for (auto i : revedges_)
-    f << i << " ";
+    f << i << std::endl;
 
   f.close();
   return true;

@@ -9,31 +9,40 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <set>
 
 namespace tema2 {
 
+const int kNMax{500};
+
 enum color { white, grey, black };
+
+struct Node;
+
+struct EdgeComparator {
+  bool operator()(const std::pair<Node *, int> &p1,
+                  const std::pair<Node *, int> &p2);
+};
 
 struct Node {
   int n;
-  std::vector<std::pair<Node *, int> > edges;
-  // if a node m is in edges, that means there is an edge n->m
+  std::multiset<std::pair<Node *, int>, EdgeComparator> edges;
   enum color col;
-  int d;  // distance to source node
 
-  explicit Node(int n) : n(n), edges(), col(white), d() {};
+  explicit Node(int n) : n(n), edges(), col(white) {};
 };
 
-struct minWeight {
-  bool operator()(const std::pair<Node *, int> &p1,
-                  const std::pair<Node *, int> &p2) {
-    return p1.second < p2.second;
-  }
-};
+bool EdgeComparator::operator()(const std::pair<Node *, int> &p1,
+                                const std::pair<Node *, int> &p2) {
+  if (p1.second == p2.second)
+    return p1.first->n < p2.first->n;
+  return p1.second < p2.second;
+}
 
 class Graph {
   bool oriented_;
   std::vector<Node> nodes_;
+  std::vector<std::pair<int, int> > edges_;
 
  public:
   Graph() : oriented_(false), nodes_() {};
@@ -45,34 +54,26 @@ class Graph {
 
   Node &GetNode(int n) { return nodes_[n]; }
 
+  std::vector<Node> &GetNodes() { return nodes_; }
+
   void AddEdge(int n, int m) {  // non-weighted graph
-    nodes_[n].edges.emplace_back(&GetNode(m), 0);
+    edges_.emplace_back(n, m);
+
+    nodes_[n].edges.emplace(&GetNode(m), 0);
     if (!oriented_)
-      nodes_[m].edges.emplace_back(&GetNode(n), 0);
+      nodes_[m].edges.emplace(&GetNode(n), 0);
   }
 
   void AddEdge(int n, int m, int w) {
-    nodes_[n].edges.emplace_back(&GetNode(m), w);
+    nodes_[n].edges.emplace(&GetNode(m), w);
     if (!oriented_)
-      nodes_[m].edges.emplace_back(&GetNode(n), w);
+      nodes_[m].edges.emplace(&GetNode(n), w);
   }
 
-  void SortEdges() {
-    for (auto &n : nodes_)
-      std::sort(n.edges.begin(), n.edges.end());
-  }
-
-  void InitSource(int source) {
-    for (auto &n : nodes_) {
-      if (n.n == source) {
-        n.d = 0;
-        n.col = grey;
-      } else {
-        n.d = INT32_MAX;
-        n.col = white;
-      }
-    }
-  }
+//  void SortEdges() {
+//    for (auto &n : nodes_)
+//      std::sort(n.edges.begin(), n.edges.end());
+//  }
 };
 
 class Problem {
@@ -121,13 +122,22 @@ class Disjcnt : public Problem {
   bool Write(std::string filename) override;
 };
 
+struct Cell {
+  bool blocked;
+  int cost;
+
+  Cell(bool blocked) : blocked(blocked), cost(INT32_MAX) {};
+};
+
 class RTD : public Problem {
   int rtd_;
+
+  void move(int pos, int x, int y, int cost, int prev_x, int prev_y);
 
  public:
   unsigned int N_, M_, Sx_, Sy_, Fx_, Fy_, K_;
   int cost_[7];
-  std::vector<std::vector<bool> > grid_;  // false => blocked
+  std::vector<std::vector<Cell> > grid_;  // false => blocked
 
   bool Read(std::string filename) override;
 

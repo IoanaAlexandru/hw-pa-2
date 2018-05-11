@@ -30,7 +30,7 @@ bool tema2::Minlexbfs::Read(std::string filename) {
 }
 
 void tema2::Minlexbfs::Solve() {
-  g_.SortEdges();
+//  g_.SortEdges();
 
   std::queue<Node*> q;
   Node *source = &g_.GetNode(1);  // Choosing lowest value node as source
