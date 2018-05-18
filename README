@@ -1,0 +1,41 @@
+            ____   _              _____                      ____  
+           |  _ \ / \            |_   _|__ _ __ ___   __ _  |___ \ 
+           | |_) / _ \    _____    | |/ _ \ '_ ` _ \ / _` |   __) |
+           |  __/ ___ \  |_____|   | |  __/ | | | | | (_| |  / __/ 
+           |_| /_/   \_\           |_|\___|_| |_| |_|\__,_| |_____|
+
+    Fiecare problemă moștenește interfața Problem, și deci are același format:
+citește datele problemei dintr-un fișier dat ca parametru cu funcția Read(),
+calculează rezultatul cu funcția Solve() și scrie rezultatul într-un fișier dat
+ca parametru cu funcția Write(). Aceste funcții pot fi apelate de oricâte ori
+pentru o instanță de problemă, pentru recitirea datelor, scrierea într-un alt
+fișier sau recalcularea rezultatelor. Pentru flexibilitate, datele de intrare
+și de ieșire ale fiecărei probleme pot fi accesate, și doar datele de intrare
+pot fi modificate în afara funcțiilor definite.
+_______________________________________________________________________________
+                            TASK 1 - MINLEXBFS
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    Pentru acest task, am implementat o parcurgere BFS a unui graf începând de
+la nodul 1, singura diferență față de algoritmul clasic fiind că muchiile (sau,
+mai exact, nodurile adiacente ale fiecărui nod) sunt stocate în ordine lexico-
+grafică - folosind un multiset construit cu un comparator care sortează muchi-
+ile întâi crescător în funcție de cost (pentru task-ul 4, nu afectează graful
+de aici pentru că nu este cu costuri) și apoi în ordine lexicografică.
+
+    Complexitatea programului (worst-case) este după cum urmează:
+
+→ Citire și inserare muchii: O(M * log(M))  │
+→ Parcurgere BFS: O(M + N)                  │=> Total: O(M * log(M))
+→ Scriere date: O(1)                        │
+_______________________________________________________________________________
+                            TASK 4 - REVEDGES
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    Pentru acest task, am adăugat în graf muchiile inverse ca având costul 1
+(muchiile de bază având cost 0) și am implementat algoritmul Floyd-Warshall,
+pentru a avea un worst-case complexity bun pentru o rulare cu multe query-uri.
+
+    Complexitatea programului (worst-case) este după cum urmează:
+
+→ Citire și inserare muchii: O(M * log(M))  │
+→ Algoritm Floyd_Warshall: O(N ^ 3)         │=> Total: O(N ^ 3)
+→ Scriere date: O(1)                        │

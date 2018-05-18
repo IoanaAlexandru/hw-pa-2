@@ -38,47 +38,29 @@ bool tema2::Revedges::Read(std::string filename) {
 }
 
 void tema2::Revedges::Solve() {
-  std::vector<std::vector<int> > cache(kNMax);
+  // Floyd-Warshall
 
-  for (auto q : query_) {  // Using Dijkstra
-    int source = q.first, destination = q.second;
+  int d[kNMax + 1][kNMax + 1];
 
-    if (!cache[source].empty()) {
-      revedges_.push_back(cache[source][destination]);
-      continue;
-    }
+  for (auto i = 1; i <= N_; i++)
+    for (auto j = 1; j <= N_; j++)
+      d[i][j] = INT32_MAX / 2;
 
-    std::vector<int> d(kNMax);
-    std::queue<std::pair<Node *, int> > queue;
+  for (auto u : g_.GetNodes()) {
+    for (auto v : u.edges)
+      d[u.n][v.first->n] = std::min(d[u.n][v.first->n], v.second);
+  }
 
-    for (auto i = 1; i <= N_; i++) {
-      d[i] = INT32_MAX;
-      g_.GetNode(i).col = white;
-    }
-    d[source] = 0;
-    g_.GetNode(source).col = grey;
-    for (auto u : g_.GetNode(source).edges) {
-      if (u.second < d[u.first->n])
-        d[u.first->n] = u.second;
-      queue.push(u);
-    }
+  for (auto k = 1; k <= N_; k++)
+    for (auto i = 1; i <= N_; i++)
+      for (auto j = 1; j <= N_; j++)
+        d[i][j] = std::min(d[i][j], d[i][k] + d[k][j]);
 
-    while (!queue.empty()) {
-      auto u = queue.front();
-      queue.pop();
-      u.first->col = grey;
-
-      for (auto v : u.first->edges) {
-        if (v.first->col == white && d[v.first->n] > d[u.first->n] + v.second) {
-          d[v.first->n] = d[u.first->n] + v.second;
-          queue.push(v);
-        }
-      }
-    }
-
-    cache[source] = d;
-
-    revedges_.push_back(cache[source][destination]);
+  for (auto q : query_) {
+    if (q.first == q.second)
+      revedges_.push_back(0);
+    else
+      revedges_.push_back(d[q.first][q.second]);
   }
 }
 

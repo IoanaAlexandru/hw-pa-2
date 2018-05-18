@@ -1,16 +1,16 @@
 build: minlexbfs disjcnt rtd revedges
 
-minlexbfs_:
-	g++ -Wall minlexbfs.cpp -o minlexbfs
+minlexbfs:
+	g++ -Wall -g utils.cpp minlexbfs.cpp -o minlexbfs
 
 disjcnt:
-	g++ -Wall disjcnt.cpp -o disjcnt
+	g++ -Wall -g utils.cpp disjcnt.cpp -o disjcnt
 
 rtd:
-	g++ -Wall rtd.cpp -o rtd
+	g++ -Wall -g utils.cpp rtd.cpp -o rtd
 
 revedges:
-	g++ -Wall revedges.cpp -o revedges
+	g++ -Wall -g utils.cpp revedges.cpp -o revedges
 
 run-p1:
 	./minlexbfs
