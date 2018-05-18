@@ -40,12 +40,11 @@ bool tema2::RTD::Read(std::string filename) {
   return true;
 }
 
-void tema2::RTD::Move(Dice dice, int x, int y, int prev_cost, std::vector<std::pair<int, int> > path) {
+void tema2::RTD::Move(Dice dice, int x, int y, int prev_cost) {
   int move_cost = cost_[dice.bottom];
-  if (prev_cost + move_cost <= grid_[x][y].cost) {
+  if (prev_cost + move_cost <= grid_[x][y].cost)
     grid_[x][y].cost = prev_cost + move_cost;
-    grid_[x][y].path = path;
-  } else
+  else
     return;
 
   if (prev_cost + cost_[dice.bottom] > grid_[Fx_][Fy_].cost)
@@ -54,29 +53,20 @@ void tema2::RTD::Move(Dice dice, int x, int y, int prev_cost, std::vector<std::p
   if (x == Fx_ && y == Fy_)
     return;
 
-  path.emplace_back(x - 1, y);
   if (x > 1 && !grid_[x - 1][y].blocked)
-    Move(dice.Roll(N), x - 1, y, grid_[x][y].cost, path);
-  path.pop_back();
-  path.emplace_back(x + 1, y);
+    Move(dice.Roll(N), x - 1, y, grid_[x][y].cost);
   if (x < N_ && !grid_[x + 1][y].blocked)
-    Move(dice.Roll(S), x + 1, y, grid_[x][y].cost, path);
-  path.pop_back();
-  path.emplace_back(x, y - 1);
+    Move(dice.Roll(S), x + 1, y, grid_[x][y].cost);
   if (y > 1 && !grid_[x][y - 1].blocked)
-    Move(dice.Roll(W), x, y - 1, grid_[x][y].cost, path);
-  path.pop_back();
-  path.emplace_back(x, y + 1);
+    Move(dice.Roll(W), x, y - 1, grid_[x][y].cost);
   if (y < M_ && !grid_[x][y + 1].blocked)
-    Move(dice.Roll(E), x, y + 1, grid_[x][y].cost, path);
+    Move(dice.Roll(E), x, y + 1, grid_[x][y].cost);
 }
 
 void tema2::RTD::Solve() {
   Dice dice(6, 1, 4, 3, 5, 2);
-  std::vector<std::pair<int, int> > path;
-  path.emplace_back(Sx_, Sy_);
 
-  Move(dice, Sx_, Sy_, 0, path);
+  Move(dice, Sx_, Sy_, 0);
 
   for (auto i = 1; i <= N_; i++) {
     for (auto j = 1; j <= M_; j++)
@@ -84,10 +74,6 @@ void tema2::RTD::Solve() {
     std::cout << std::endl;
   }
   std::cout << std::endl;
-
-
-  for (auto p : grid_[Fx_][Fy_].path)
-    std::cout << p.first << ' ' << p.second << std::endl;
 
   rtd_ = grid_[Fx_][Fy_].cost;
 }

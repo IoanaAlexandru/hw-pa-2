@@ -69,7 +69,7 @@ class Disjcnt : public Problem {
 class RTD : public Problem {
   int rtd_;
 
-  void Move(Dice dice, int x, int y, int prev_cost, std::vector<std::pair<int, int> > path);
+  void Move(Dice dice, int x, int y, int prev_cost);
 
  public:
   unsigned int N_, M_, Sx_, Sy_, Fx_, Fy_, K_;

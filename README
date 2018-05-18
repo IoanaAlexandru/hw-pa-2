@@ -28,6 +28,45 @@ de aici pentru că nu este cu costuri) și apoi în ordine lexicografică.
 → Parcurgere BFS: O(M + N)                  │=> Total: O(M * log(M))
 → Scriere date: O(1)                        │
 _______________________________________________________________________________
+                            TASK 2 - DISJCNT
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    Pentru acest task, am considerat graful ca fiind orientat (orientarea mu-
+chiilor fiind aleasă arbitrar) și am aplicat algoritmul lui Tarjan.
+    În mod normal, acest algoritm se folosește pentru grafuri orientate, dar
+în cazul unui graf neorientat, acest algoritm îmi dă grupări de noduri care fac
+parte dintr-un ciclu (dacă, în graful orientat, există un drum atât de la u la
+v, cât și de la v la u, înseamnă că în graful orientat dacă luăm fiecare muchie
+într-o anumită direcție - nu în ambele simultan - vor exista două drumuri dis-
+tincte între u și v, adică exact cerința problemei). Așadar, pe măsură ce par-
+curg graful, când aleg direcția unei muchii, șterg muchia inversă.
+    Nu am mai folosit structura de graf utilizată la task-urile 1 și 4, ci am
+folosit pur și simplu o matrice de adiacență.
+
+    Complexitatea programului (worst-case) este după cum urmează:
+
+→ Citire și salvare muchii: O(M)                    │
+→ Algoritm Tarjan cu eliminare muchii: O(M * M + N) │ => Total: O(M ^ 2)
+→ Scriere date: O(1)                                │
+_______________________________________________________________________________
+                              TASK 3 - RTD
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    Pentru acest task, am aplicat o parcurgere BFS recursivă (similară cu Dijk-
+stra) pe o matrice de booleans care reprezintă grid-ul, unde dacă un element
+este false, înseamnă că acea căsuță este blocată. La fiecare pas din parcurgere,
+adaug la costul anterior (memorat printr-un argument) costul corespunzător miș-
+cării zarului în direcția respectivă și îl compar cu costul deja calculat pen-
+tru căsuța pe care am ajuns. Dacă noul cost este mai mic, continui deplasarea
+în toate direcțiile posibile, altfel opresc deplasarea în această direcție. O-
+presc deplasarea și dacă costul obținut este mai mare decât costul deja calcu-
+lat într-un pas anterior pentru căsuța grid[Fx][Fy], sau dacă am ajuns deja la
+căsuța finală.
+
+    Complexitatea programului (worst-case) este după cum urmează:
+
+→ Citire și salvare date: O(K)                     │
+→ Parcurgere BFS/Dijkstra pe matrice: O(N ^ 2 + M) │ => Total: O(N ^ 2)
+→ Scriere date: O(1)                               │
+_______________________________________________________________________________
                             TASK 4 - REVEDGES
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
     Pentru acest task, am adăugat în graf muchiile inverse ca având costul 1
@@ -39,3 +78,5 @@ pentru a avea un worst-case complexity bun pentru o rulare cu multe query-uri.
 → Citire și inserare muchii: O(M * log(M))  │
 → Algoritm Floyd_Warshall: O(N ^ 3)         │=> Total: O(N ^ 3)
 → Scriere date: O(1)                        │
+
+=========================== ALEXANDRU Ioana | 324CB ===========================
