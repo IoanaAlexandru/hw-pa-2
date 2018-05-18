@@ -44,12 +44,12 @@ void tema2::Disjcnt::Tarjan(int v, int &index) {
   S_contains[v] = true;
 
   for (auto u : adj[v]) {
-      // Removing reverse edge
-      auto reverse = std::find(adj[u].begin(), adj[u].end(), v);
-      if (reverse != adj[u].end())
-        adj[u].erase(reverse);
 
       if (idx[u] == -1) {
+        // Removing reverse edge
+        auto reverse = std::find(adj[u].begin(), adj[u].end(), v);
+        if (reverse != adj[u].end())
+          adj[u].erase(reverse);
         Tarjan(u, index);
         lowlink[v] = std::min(lowlink[v], lowlink[u]);
       } else if (S_contains[u]) {
@@ -60,15 +60,17 @@ void tema2::Disjcnt::Tarjan(int v, int &index) {
   unsigned long CTC_size = 0;
   if (lowlink[v] == idx[v]) {
     int u = 0;
-    while (u != v && !S.empty()) {
+    while (u != v) {
       u = S.back();
       S.pop_back();
       S_contains[u] = false;
       CTC_size++;
+      std::cout << u << " ";
     }
 
     sol_ += CTC_size * (CTC_size - 1) / 2;
   }
+  std::cout << std::endl;
 }
 
 void tema2::Disjcnt::Solve() {
