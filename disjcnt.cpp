@@ -65,12 +65,10 @@ void tema2::Disjcnt::Tarjan(int v, int &index) {
       S.pop_back();
       S_contains[u] = false;
       CTC_size++;
-      std::cout << u << " ";
     }
 
     sol_ += CTC_size * (CTC_size - 1) / 2;
   }
-  std::cout << std::endl;
 }
 
 void tema2::Disjcnt::Solve() {
